@@ -39,12 +39,12 @@ const previewGroupDefinitions = {
     source: [
         { name: '源选择与合并', keys: ['SOURCE_ORDER', 'MERGE_SOURCE_PAIRS', 'CUSTOM_MERGE_RULES'] },
         { name: '第三方与 VOD 服务', keys: ['OTHER_SERVER', 'CUSTOM_SOURCE_API_URL', 'VOD_SERVERS', 'VOD_RETURN_MODE', 'VOD_REQUEST_TIMEOUT'] },
-        { name: '平台凭证与并发', keys: ['BILIBILI_COOKIE', 'DOUBAN_COOKIE', 'YOUKU_CONCURRENCY'] },
+        { name: '平台凭证与并发', keys: ['BILIBILI_COOKIE', 'DOUBAN_COOKIE', 'YOUKU_CONCURRENCY', 'TENCENT_CONCURRENCY', 'IQIYI_CONCURRENCY'] },
         { name: 'NipaPlay 中转弹弹play服务端', keys: ['DANDANPLAY_ACCOUNT', 'DANDANPLAY_PASSWORD'] }
     ],
     match: [
         { name: '匹配策略', keys: ['PLATFORM_ORDER', 'STRICT_TITLE_MATCH', 'ENABLE_ANIME_EPISODE_FILTER'] },
-        { name: '标题处理', keys: ['ANIME_TITLE_FILTER', 'EPISODE_TITLE_FILTER', 'TITLE_TO_CHINESE', 'ANIME_TITLE_SIMPLIFIED', 'TITLE_MAPPING_TABLE', 'AUTO_MATCH_MAPPING_TABLE', 'TITLE_NOISE_FILTER'] },
+        { name: '标题处理', keys: ['ANIME_TITLE_FILTER', 'EPISODE_TITLE_FILTER', 'TITLE_TO_CHINESE', 'ANIME_TITLE_SIMPLIFIED', 'TITLE_MAPPING_TABLE', 'TITLE_MAPPING_TABLE_URL', 'AUTO_MATCH_MAPPING_TABLE', 'AUTO_MATCH_MAPPING_TABLE_URL', 'TITLE_NOISE_FILTER'] },
         { name: 'AI 匹配', keys: ['AI_BASE_URL', 'AI_MODEL', 'AI_API_KEY', 'AI_MATCH_PROMPT'] },
         { name: '动画元数据', keys: ['USE_BANGUMI_DATA'] }
     ],
@@ -55,6 +55,7 @@ const previewGroupDefinitions = {
         { name: '时间与来源适配', keys: ['DANMU_OFFSET', 'HONGGUO_MERGE_ALL_EPISODES'] }
     ],
     cache: [
+        { name: '文件缓存', keys: ['LOCAL_CACHE_ENABLED'] },
         { name: '缓存时效', keys: ['SEARCH_CACHE_MINUTES', 'COMMENT_CACHE_MINUTES', 'COMMENT_CACHE_MIN_COUNT', 'BANGUMI_DATA_CACHE_DAYS'] },
         { name: '容量与历史', keys: ['REMEMBER_LAST_SELECT', 'MAX_LAST_SELECT_MAP', 'MAX_ANIMES'] },
         { name: 'Redis 服务', keys: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'LOCAL_REDIS_URL'] }
@@ -80,7 +81,12 @@ function renderPreview() {
     const proxyConfigContainer = document.getElementById('proxy-config-container');
 
     if (preview) {
-        preview.innerHTML = '<p class="text-gray">正在加载配置...</p>';
+        preview.innerHTML = '<p class="text-gray">正在加载配置...</p>'
+            + '<div class="skeleton-stack">'
+            + '<span class="skeleton-line"></span>'
+            + '<span class="skeleton-line"></span>'
+            + '<span class="skeleton-line"></span>'
+            + '</div>';
     }
 
     fetch(buildApiUrl('/api/config'))
